@@ -3,7 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 const axios = require("axios");
 // layout for page
-
 import Auth from "layouts/Auth.js";
 
 export default function Login() {
@@ -11,34 +10,20 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const inputHandler = (state, setState, value) => {
-    console.log(value);
-    setState(value);
-  };
-
   const formSubmit = async(event) => {
     event.preventDefault();
-    console.log(JSON.stringify({
-      "email": email,
-      "password": password
-    }))
-    const response = await axios({
-      url: "http://localhost:5000/api/users/login", 
-      body:JSON.stringify({
-        email: email,
-        password: password
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    const responseData = await response.json();
 
-    if (!response.ok) {
-      return console.log(responseData.message);
+    const response = await axios.post('http://localhost:5000/api/users/login', {
+      email: email,
+      password: password
+    });
+
+    if (response.statusText !== "OK") {
+      return console.log(response.message);
     }
 
-    window.location.href("/");  
+    console.log("Logged in successfully, now redirecting!");
+    window.location.href = "/";  
   }
 
   return (
@@ -53,7 +38,7 @@ export default function Login() {
                     Sign in with
                   </h6>
                 </div>
-                <form>
+                <form onSubmit={formSubmit}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -65,7 +50,7 @@ export default function Login() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
-                      onChange={(event) => inputHandler(email, setEmail, event.target.value)}
+                      onChange={(event) => setEmail(event.target.value)}
                       value={email}
                     />
                   </div>
@@ -81,7 +66,7 @@ export default function Login() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
-                      onChange={(event) => inputHandler(password, setPassword, event.target.value)}
+                      onChange={(event) => setPassword(event.target.value)}
                       value={password}
                     />
                   </div>
@@ -90,7 +75,6 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="submit"
-                      onClick={formSubmit}
                     >
                       Sign In
                     </button>

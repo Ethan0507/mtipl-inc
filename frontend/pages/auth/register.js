@@ -1,11 +1,35 @@
 import React from "react";
 import Link from "next/link";
+import { useState } from "react";
+import axios from "axios";
 
 // layout for page
 
 import Auth from "layouts/Auth.js";
 
 export default function Register() {
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const formSubmit = async(event) => {
+    event.preventDefault();
+
+    const response = await axios.post("http://localhost:5000/api/users/new", {
+      name: name,
+      email: email,
+      password: password
+    });
+
+    if (response.statusText !== "Created") {
+      return console.log(response.message);
+    }
+
+    console.log("Created user, now redirecting!")
+    window.location.href = "/";
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -18,7 +42,7 @@ export default function Register() {
                     Sign up with
                   </h6>
                 </div>
-                <form>
+                <form onSubmit={formSubmit}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -27,9 +51,10 @@ export default function Register() {
                       Name
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      onChange={(event) => setName(event.target.value)}
                     />
                   </div>
 
@@ -44,6 +69,7 @@ export default function Register() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      onChange={(event) => setEmail(event.target.value)}
                     />
                   </div>
 
@@ -58,6 +84,7 @@ export default function Register() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      onChange={(event) => setPassword(event.target.value)}
                     />
                   </div>
 
@@ -84,7 +111,7 @@ export default function Register() {
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
                       Create Account
                     </button>
