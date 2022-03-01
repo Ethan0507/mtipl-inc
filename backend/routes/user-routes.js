@@ -9,7 +9,7 @@ const userController = require('../controllers/user-controller');
 const router = express.Router();
 
 // Available user routes
-// router.get('/all', userController.getUsers);
+router.get('/all', userController.getUsers);
 
 router.post(
   '/new',

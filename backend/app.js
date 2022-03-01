@@ -44,7 +44,8 @@ app.use('/api/products', productRoutes);
 
 // Handle invalid route
 app.use((req, res, next) => {
-    const error = new Error("Could not find this route!", 404);
+    const error = new Error("Could not find this route!");
+    error.code = 404;
     throw error;
 }) 
 
