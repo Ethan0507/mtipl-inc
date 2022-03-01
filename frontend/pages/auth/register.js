@@ -6,8 +6,11 @@ import axios from "axios";
 // layout for page
 
 import Auth from "layouts/Auth.js";
+import { useRouter } from "next/router";
 
 export default function Register() {
+
+  const router = useRouter();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,8 +29,8 @@ export default function Register() {
       return console.log(response.message);
     }
 
-    console.log("Created user, now redirecting!")
-    window.location.href = "/";
+    console.log(response.data);
+    router.push("/");
   }
 
   return (

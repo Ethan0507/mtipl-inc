@@ -1,11 +1,14 @@
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 const axios = require("axios");
 // layout for page
 import Auth from "layouts/Auth.js";
 
 export default function Login() {
+
+  const router = useRouter();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +26,10 @@ export default function Login() {
     }
 
     console.log("Logged in successfully, now redirecting!");
-    window.location.href = "/";  
+    router.push("/");
+
+    const dummyRespose = await axios.get('http://localhost:5000/api/users/all');
+    console.log(dummyRespose.data);
   }
 
   return (
