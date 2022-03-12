@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 // Internal module imports
 const userRoutes = require('./routes/user-routes');
@@ -37,6 +38,17 @@ app.use((req, res, next) => {
     next();
   });
 
+// Get Product image
+app.get('/products/images/:fileName', async(req, res, next) => {
+    // Get filename from request parameters
+    const { fileName } = req.params;
+
+    const dirname = path.resolve();
+    const fileFullPath = path.join(dirname+ "/uploads/products/images/" + fileName)
+
+    return res.sendFile(fileFullPath);
+})
+
 // Forward requests to appropriate routes
 app.use('/api/users', userRoutes);
 
@@ -52,9 +64,23 @@ app.use((req, res, next) => {
 // Handle errors
 app.use((error, req, res, next) => {
     if (req.files) {
-        fs.unlink(req.files.image.path, err => {
-            if (err) console.log(err);
-        })
+        if (req.files.image1) {
+            let imageIndex = 1;
+            while (true) {
+                if (req.files['image'+imageIndex]) {
+                    fs.unlink(req.files['image'+imageIndex].path, err => {
+                        if (err) console.log(err);
+                    });
+                    imageIndex++;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            fs.unlink(req.files.image.path, err => {
+                if (err) console.log(err);
+            });
+        }
     }
     if (res.headerSent) {
         return next(error);

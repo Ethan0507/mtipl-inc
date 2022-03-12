@@ -9,9 +9,9 @@ const productSchema = new Schema({
     images: [{ type: String, required: true }],
     price: { type: Number, required:true },
     category: { type: String, required: true },
-    subCategory: { type: String, required: true },
-    discount: { type: Number, requried: true },
-    rating: { type: Number, required: true, min: 0, max: 5 }
+    subCategory: { type: String, required: true, default: "None" },
+    discount: { type: Number, requried: true, default: 0 },
+    rating: { type: Number, required: true, min: 0, max: 5, default: 0 }
 });
 
 productSchema.plugin(uniqueValidator);
