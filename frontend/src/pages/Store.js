@@ -14,6 +14,9 @@ import {
 
 import { faker } from '@faker-js/faker';
 import { sample } from 'lodash';
+
+import { AuthContext } from '../utils/context/auth-context';
+import { useContext } from 'react';
 // utils
 // import { mockImgProduct } from '../utils/mockImages';
 
@@ -82,6 +85,13 @@ const PRODUCTS = [...Array(24)].map((_, index) => {
 // ----------------------------------------------------------------------
 
 export default function Store() {
+
+  const auth = useContext(AuthContext);
+
+  if (!auth.isLoggedIn) {
+    window.location.href = "/login";
+  }
+
   const [openFilter, setOpenFilter] = useState(false);
 
   const formik = useFormik({

@@ -73,8 +73,9 @@ const ResponsiveAppBar = (props) => {
   const handleLogout = () => {
     handleCloseUserMenu();
     auth.logout();
-    navigate("/login");
-  }
+    // navigate("/login");
+    console.log(auth);
+  };
 
   const settings = [{
     label: 'Profile',
