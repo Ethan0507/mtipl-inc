@@ -7,16 +7,43 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Link from '@mui/material/Link';
+import Avatar from '@mui/material/Avatar';
 
-const pages = ['About Us', 'Services', 'How we work', 'Allainces', 'Contact Us'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { AuthContext } from "../utils/context/auth-context";
+import { useContext } from 'react';
 
-const ResponsiveAppBar = () => {
+import { useNavigate, useLocation } from "react-router-dom";
+
+const pages = [
+  {
+    label: 'About Us',
+    href: "about"
+  },{
+    label: 'Services',
+    href: "services"
+  }, {
+    label: 'How we work',
+    href: "how-we-work"
+  },
+  {
+    label: 'Alliances',
+    href: 'alliances'
+  },{
+    label: 'Contact us',
+    href: 'contact'
+  }
+];
+
+const ResponsiveAppBar = (props) => {
+
+  const auth = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -32,9 +59,40 @@ const ResponsiveAppBar = () => {
   };
 
   const handleCloseUserMenu = () => {
-    window.location.href = "/login";
     setAnchorElUser(null);
   };
+
+  const handleGoToStore = () => {
+    if (auth.isLoggedIn) {
+      window.location.href = "/store";
+    } else {
+      window.location.href = "/login";
+    }
+  }
+
+  const handleLogout = () => {
+    handleCloseUserMenu();
+    auth.logout();
+    navigate("/login");
+  }
+
+  const settings = [{
+    label: 'Profile',
+    helper: handleCloseUserMenu
+  },
+  {
+    label: 'Account',
+    helper: handleCloseUserMenu
+  },
+  {
+    label: 'Dashboard',
+    helper: handleCloseUserMenu
+  },
+  {
+    label:'Logout',
+    helper: handleLogout
+  }];
+
 
   return (
     <AppBar position="sticky">
@@ -88,8 +146,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.label} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -111,20 +169,21 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.label}
+                onClick={() => { handleCloseNavMenu(); window.location.href = "#"+page.href; }}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.label}
               </Button>
             ))}
           </Box>
 
+          {auth.isLoggedIn && location.pathname === "/store" ?
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <Button variant="contained" color="secondary" onClick={() => window.location.href = "/store"} sx={{ px: 2, py: 1 }} style={{ color: "#fff" }}>
-                Go to store
-              </Button>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="avatar_1.jpg" />
+              </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -143,12 +202,17 @@ const ResponsiveAppBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.label} onClick={setting.helper}>
+                  <Typography textAlign="center">{setting.label}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
+          :
+          <Button variant="contained" color="secondary" onClick={handleGoToStore} sx={{ px: 2, py: 1 }} style={{ color: "#fff" }}>
+            Go to store
+          </Button>
+          }
         </Toolbar>
       </Container>
     </AppBar>

@@ -3,7 +3,7 @@ import { styled, alpha } from '@mui/material/styles';
 import { Badge } from '@mui/material';
 
 // component
-// import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ export default function CartWidget() {
   return (
     <RootStyle>
       <Badge showZero badgeContent={0} color="error" max={99}>
-        {/* <Iconify icon="eva:shopping-cart-fill" width={24} height={24} /> */}
+        <Iconify icon="eva:shopping-cart-fill" width={24} height={24} />
       </Badge>
     </RootStyle>
   );

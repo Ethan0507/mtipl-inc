@@ -2,7 +2,7 @@ import { useState } from 'react';
 // material
 import { Menu, Button, MenuItem, Typography } from '@mui/material';
 // component
-// import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ export default function ShopProductSort() {
         color="inherit"
         disableRipple
         onClick={handleOpen}
-        endIcon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'}
+        endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>

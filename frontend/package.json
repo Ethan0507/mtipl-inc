@@ -39,10 +39,13 @@
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@faker-js/faker": "^6.0.0-beta.0",
+    "@iconify/react": "^3.1.4",
     "@mui/icons-material": "^5.5.0",
     "@mui/material": "^5.5.0",
     "formik": "^2.2.9",
     "loadash": "^1.0.0",
+    "prop-types": "^15.8.1",
+    "react-material-ui-carousel": "^3.2.0",
     "react-router-dom": "^6.2.2",
     "simplebar-react": "^2.3.6"
   }

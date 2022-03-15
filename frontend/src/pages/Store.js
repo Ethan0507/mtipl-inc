@@ -9,7 +9,7 @@ import {
   ProductList,
   ProductCartWidget,
   ProductFilterSidebar
-} from './sections';
+} from './sections/products';
 //
 
 import { faker } from '@faker-js/faker';
@@ -115,7 +115,7 @@ export default function Store() {
   return (
     // <Page title="Dashboard: Products | Minimal-UI">
       <Container>
-        <Typography variant="h4" sx={{ mt: 5 }}>
+        <Typography variant="h4" sx={{ mt: 3 }}>
           Products
         </Typography>
 
@@ -124,7 +124,7 @@ export default function Store() {
           flexWrap="wrap-reverse"
           alignItems="center"
           justifyContent="flex-end"
-          sx={{ mb: 5 }}
+          sx={{ mb: 3 }}
         >
           <Stack direction="row" spacing={1} flexShrink={1} sx={{ my: 1 }}>
             <ProductFilterSidebar

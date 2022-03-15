@@ -1,13 +1,19 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import Paper from '@mui/material/Paper';
-import { styled } from "@mui/material/styles";
+// import Paper from '@mui/material/Paper';
+// import { styled } from "@mui/material/styles";
 import ProductImages from "../components/ProductImages";
 import { Typography, Divider, TextField } from "@mui/material";
 import { Button } from "@mui/material";
 
 export default function ProductPage() {
+
+
+    const addProductToCart = () => {
+        window.location.href = "/checkout";
+    }
+
     return (
         <>
             <Grid container spacing={2} sx={{ my: 1 }}>
@@ -19,8 +25,8 @@ export default function ProductPage() {
                         <Typography variant="h3" gutterBottom component="div">Product name</Typography>
                         <Typography variant="subtitle1" gutterBottom component="div">Product description</Typography>
                         <Typography variant="h5" component="div">Rs. 399</Typography>
-                        <Button variant="contained" color="secondary" sx={{ my: 2 }}>Buy now</Button>
-                        <Button variant="outlined" color="secondary" sx={{ mx: 1, my: 2 }}>Rent now</Button>
+                        <Button variant="contained" color="secondary" sx={{ my: 2 }} onClick={addProductToCart}>Buy now</Button>
+                        <Button variant="outlined" color="secondary" sx={{ mx: 1, my: 2 }} onClick={addProductToCart}>Rent now</Button>
 
                         <Divider sx={{ my: 2 }} />
                         <Typography variant="h5" component="div">Product description</Typography>

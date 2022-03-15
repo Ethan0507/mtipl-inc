@@ -12,7 +12,13 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import HomePage from "./pages/HomePage";
 import Store from "./pages/Store";
+import Checkout from "./pages/Checkout";
 import ProductPage from "./pages/ProductPage";
+import StickyFooter from "./components/StickyFooter";
+import { Box } from "@mui/material";
+
+import { AuthContext } from "./utils/context/auth-context";
+import { useAuth } from "./utils/hooks/auth-hook";
 
 const theme = createTheme({
   typography: {
@@ -40,18 +46,41 @@ const theme = createTheme({
 });
 
 function App() {
+
+  const { token, login, logout , userId } = useAuth();
+
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <ResponsiveAppBar />
-        <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/store" element={<Store />} />
-          <Route path="/product" element={<ProductPage />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn: !!token,
+          token: token,
+          userId: userId,
+          login: login,
+          logout: logout
+        }}
+      >
+        <BrowserRouter>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
+          >
+            <ResponsiveAppBar />
+            <Routes>
+              <Route index element={<HomePage />} />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/product" element={<ProductPage />} />
+              <Route path="/checkout" element={<Checkout />} />
+            </Routes>
+            <StickyFooter />
+          </Box>
+        </BrowserRouter>
+      </AuthContext.Provider>
     </ThemeProvider>
   );
 }

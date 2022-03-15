@@ -12,32 +12,40 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { AuthContext } from "../utils/context/auth-context";
+import { useContext } from 'react';
+
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    try {
+      let responseData = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: data.get('email'),
+          password: data.get('password'),
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      responseData = await responseData.json();
+      auth.login(responseData.userId, responseData.token);
+      navigate("/store");
+    } catch (err) {}
   };
 
   return (
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ mb: 5 }}>
         <CssBaseline />
         <Box
           sx={{
@@ -100,7 +108,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
   );
 }

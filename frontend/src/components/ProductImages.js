@@ -1,10 +1,10 @@
 import React from "react";
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
+// import ImageList from '@mui/material/ImageList';
+// import ImageListItem from '@mui/material/ImageListItem';
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+// import Typography from "@mui/material/Typography";
+// import Box from "@mui/material/Box";
 
 let products = [1, 2, 3, 4];
 

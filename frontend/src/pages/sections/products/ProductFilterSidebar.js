@@ -17,9 +17,8 @@ import {
   FormControlLabel
 } from '@mui/material';
 //
-// import Iconify from '../../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import ColorManyPicker from '../../components/ColorManyPicker';
+import Iconify from '../../../components/Iconify';
+import Scrollbar from '../../../components/Scrollbar';
 
 // ----------------------------------------------------------------------
 
@@ -29,23 +28,13 @@ export const SORT_BY_OPTIONS = [
   { value: 'priceDesc', label: 'Price: High-Low' },
   { value: 'priceAsc', label: 'Price: Low-High' }
 ];
-export const FILTER_GENDER_OPTIONS = ['Men', 'Women', 'Kids'];
-export const FILTER_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
+export const FILTER_CATEGORY_OPTIONS = ['Men', 'Women', 'Kids'];
+export const FILTER_SUB_CATEGORY_OPTIONS = ['All', 'Shose', 'Apparel', 'Accessories'];
 export const FILTER_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 export const FILTER_PRICE_OPTIONS = [
   { value: 'below', label: 'Below $25' },
   { value: 'between', label: 'Between $25 - $75' },
   { value: 'above', label: 'Above $75' }
-];
-export const FILTER_COLOR_OPTIONS = [
-  '#00AB55',
-  '#000000',
-  '#FFFFFF',
-  '#FFC0CB',
-  '#FF4842',
-  '#1890FF',
-  '#94D82D',
-  '#FFC107'
 ];
 
 // ----------------------------------------------------------------------
@@ -72,7 +61,7 @@ export default function ShopFilterSidebar({
       <Button
         disableRipple
         color="inherit"
-        // endIcon={<Iconify icon="ic:round-filter-list" />}
+        endIcon={<Iconify icon="ic:round-filter-list" />}
         onClick={onOpenFilter}
       >
         Filters&nbsp;
@@ -87,6 +76,7 @@ export default function ShopFilterSidebar({
             PaperProps={{
               sx: { width: 280, border: 'none', overflow: 'hidden' }
             }}
+            style={{ overflowY: "scroll" }}
           >
             <Stack
               direction="row"
@@ -98,7 +88,7 @@ export default function ShopFilterSidebar({
                 Filters
               </Typography>
               <IconButton onClick={onCloseFilter}>
-                {/* <Iconify icon="eva:close-fill" width={20} height={20} /> */}
+                <Iconify icon="eva:close-fill" width={20} height={20} />
               </IconButton>
             </Stack>
 
@@ -111,7 +101,7 @@ export default function ShopFilterSidebar({
                     Gender
                   </Typography>
                   <FormGroup>
-                    {FILTER_GENDER_OPTIONS.map((item) => (
+                    {FILTER_CATEGORY_OPTIONS.map((item) => (
                       <FormControlLabel
                         key={item}
                         control={
@@ -132,24 +122,24 @@ export default function ShopFilterSidebar({
                     Category
                   </Typography>
                   <RadioGroup {...getFieldProps('category')}>
-                    {FILTER_CATEGORY_OPTIONS.map((item) => (
+                    {FILTER_SUB_CATEGORY_OPTIONS.map((item) => (
                       <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
                     ))}
                   </RadioGroup>
                 </div>
 
-                <div>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Colors
-                  </Typography>
-                  <ColorManyPicker
-                    name="colors"
-                    colors={FILTER_COLOR_OPTIONS}
-                    onChange={handleChange}
-                    onChecked={(color) => values.colors.includes(color)}
-                    sx={{ maxWidth: 38 * 4 }}
-                  />
-                </div>
+                  {/* <div>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Colors
+                    </Typography>
+                    <ColorManyPicker
+                      name="colors"
+                      colors={FILTER_COLOR_OPTIONS}
+                      onChange={handleChange}
+                      onChecked={(color) => values.colors.includes(color)}
+                      sx={{ maxWidth: 38 * 4 }}
+                    />
+                  </div> */}
 
                 <div>
                   <Typography variant="subtitle1" gutterBottom>
@@ -212,7 +202,7 @@ export default function ShopFilterSidebar({
                 color="inherit"
                 variant="outlined"
                 onClick={onResetFilter}
-                // startIcon={<Iconify icon="ic:round-clear-all" />}
+                startIcon={<Iconify icon="ic:round-clear-all" />}
               >
                 Clear All
               </Button>
