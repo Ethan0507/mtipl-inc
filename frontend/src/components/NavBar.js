@@ -64,9 +64,9 @@ const ResponsiveAppBar = (props) => {
 
   const handleGoToStore = () => {
     if (auth.isLoggedIn) {
-      window.location.href = "/store";
+      navigate("/store");
     } else {
-      window.location.href = "/login";
+      navigate("/login");
     }
   }
 
@@ -147,7 +147,7 @@ const ResponsiveAppBar = (props) => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.label} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.label} onClick={() => { handleCloseNavMenu(); window.location.href = "#"+page.href; }}>
                   <Typography textAlign="center">{page.label}</Typography>
                 </MenuItem>
               ))}

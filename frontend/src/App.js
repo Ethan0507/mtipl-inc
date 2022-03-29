@@ -19,6 +19,7 @@ import { Box } from "@mui/material";
 
 import { AuthContext } from "./utils/context/auth-context";
 import { useAuth } from "./utils/hooks/auth-hook";
+import OrderSuccessful from "./pages/OrderSuccessful";
 
 const theme = createTheme({
   typography: {
@@ -76,6 +77,7 @@ function App() {
               <Route path="/store" element={<Store />} />
               <Route path="/product" element={<ProductPage />} />
               <Route path="/checkout" element={<Checkout />} />
+              <Route path="/order/success" element={<OrderSuccessful />} />
             </Routes>
             <StickyFooter />
           </Box>

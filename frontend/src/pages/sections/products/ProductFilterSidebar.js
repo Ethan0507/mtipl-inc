@@ -68,7 +68,7 @@ export default function ShopFilterSidebar({
       </Button>
 
       <FormikProvider value={formik}>
-        <Form autoComplete="off" noValidate>
+        <Form>
           <Drawer
             anchor="right"
             open={isOpenFilter}

@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert';
 
 import { AuthContext } from "../utils/context/auth-context";
 import { useContext } from 'react';
@@ -22,13 +23,22 @@ export default function SignIn() {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [error, setError] = React.useState();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     
+    var validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
     try {
-      let responseData = await fetch('http://localhost:5000/api/users/login', {
+
+      if (!data.get('email').match(validRegex)) {
+        throw Error("Please enter a valid email address");
+      }
+
+      let response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
         body: JSON.stringify({
           email: data.get('email'),
@@ -38,10 +48,15 @@ export default function SignIn() {
           'Content-Type': 'application/json'
         }
       });
-      responseData = await responseData.json();
+      let responseData = await response.json();
+      if (!response.ok) {
+        throw Error(responseData.message);
+      }
       auth.login(responseData.userId, responseData.token);
       navigate("/store");
-    } catch (err) {}
+    } catch (err) {
+      setError(err);
+    }
   };
 
   return (
@@ -61,6 +76,9 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          <Alert variant="filled" severity="error" sx={{ m:1, p: 1, display: error ? '' : 'none' }}>
+            {error ? error.message : ""}
+          </Alert>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"

@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from 'react-material-ui-carousel'
 
-import { Paper, Button, Box, Typography } from "@mui/material";
+import { Paper, Button, Box, Typography, Container } from "@mui/material";
 
 export default function Landing(props)
 {
@@ -29,7 +29,7 @@ export default function Landing(props)
     ]
 
     return (
-        <Carousel autoPlay animation="slide" duration={1000} indicators="false" sx={{ mb: 3, width: "100%", minHeight: "20vh", maxHeight: "50vh" }}>
+        <Carousel autoPlay animation="slide" duration={1000} indicators={false}>
             {
                 items.map( (item, i) => <Item key={i} item={item} /> )
             }
@@ -40,11 +40,11 @@ export default function Landing(props)
 function Item(props)
 {
     return (
-        <Box>
+        <Container>
             <img src={props.item.image} alt={props.item.name}/>
             <Box style={{ p: 1, position: "absolute", top: "5%", left: "2%", zIndex:10000, border: "2px solid white", backgroundColor:"rgba(0,0,30,0.4)", backdropFilter: "blur(2px)" }}>
                 <Typography variant="h3" color="white" sx={{ p: 2 }}>{props.item.name}</Typography>
             </Box>
-        </Box>
+        </Container>
     );
 }

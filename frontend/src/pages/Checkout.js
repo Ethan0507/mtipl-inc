@@ -13,33 +13,70 @@ import Typography from '@mui/material/Typography';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import { useFormik, Form, FormikProvider } from 'formik';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error('Unknown step');
-  }
-}
-
 
 export default function Checkout() {
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const formik = useFormik({
+    initialValues: getInitialValues(activeStep),
+  });
+
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+    if (activeStep === 2) {
+      window.location.href = "/order/success";
+    }
+    else {
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <AddressForm handleNext={handleNext} formik={formik}/>;
+      case 1:
+        return <PaymentForm />;
+      case 2:
+        return <Review />;
+      default:
+        throw new Error('Unknown step');
+    }
+  }
+  
+  function getInitialValues(step) {
+    switch(step) {
+      case 0: 
+        return {
+          label: '',
+          firstName: '',
+          lastName: '',
+          addressInfo: '',
+          city: '',
+          state: '',
+          postalCode: '',
+          country: '',
+          isPrimary: false
+        };
+      case 1:
+          return {
+            somevalue: ''
+          };
+      case 2:
+          return {
+            newvalue: ''
+          }
+      default: 
+          throw new Error("Unknown step");
+    }
+  }
+  
 
   return (
       <>
@@ -70,6 +107,8 @@ export default function Checkout() {
               </React.Fragment>
             ) : (
               <React.Fragment>
+                <FormikProvider value={formik}>
+                <Form>
                 {getStepContent(activeStep)}
                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                   {activeStep !== 0 && (
@@ -82,10 +121,13 @@ export default function Checkout() {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
+                    type="submit"
                   >
                     {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                   </Button>
                 </Box>
+                </Form>
+                </FormikProvider>
               </React.Fragment>
             )}
           </React.Fragment>
