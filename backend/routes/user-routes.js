@@ -27,5 +27,17 @@ router.post(
 
 router.post('/login', userController.login);
 
+
+// User order routes
+// router.post(
+//   '/:userId/orders/new',
+
+// )
+
+
+// User Address routes
+router.post('/:userId/address/new', userController.addAddress);
+
+
 // Export the user-router
 module.exports = router;

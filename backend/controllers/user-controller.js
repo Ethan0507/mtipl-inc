@@ -3,9 +3,11 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const path = require('path');
+const mongoose = require('mongoose');
 
 // Internal module imports
 const User = require('../models/user');
+const Address = require('../models/address');
 
 // Get all users
 const getUsers = async(req, res, next) => {
@@ -185,7 +187,64 @@ const login = async(req, res, next) => {
     });
 }
 
+
+const addAddress = async(req, res, next) => {
+
+    const { userId } = req.params;
+
+    let user;
+    try {
+        // Fetch user from DB based on user id in the url
+        user = await User.findOne({ _id: userId });
+    } catch (err) {
+        // Forward the error to the Error handler
+        const error = new Error("Encountered an error while trying to add address for user, please try again!");
+        error.code = 500;
+        return next(error);
+    }
+
+    if (!user) {
+        // Forward the error to the Error handler
+        const error = new Error("Could not find a user for the given user id");
+        error.code = 403;
+        return next(error);
+    }
+
+    // Get name, email and password from request body
+    const { label, firstName, lastName, addressInfo, city, state, postalCode, country, isPrimary } = req.body;
+
+    const createdAddress = new Address({
+        label,
+        firstName,
+        lastName,
+        addressInfo,
+        city,
+        state,
+        postalCode,
+        country,
+        isPrimary: isPrimary === "true" ? true : false,
+        user: user._id
+    });
+
+    try {
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        await createdAddress.save({ session: sess });
+        user.addresses.push(createdAddress);
+        await user.save({ session : sess });
+        await sess.commitTransaction();
+      } catch (err) {
+        // Forward the error to the Error handler
+        const error = new Error("Adding new address failed, please try again later!");
+        error.code = 403;
+        return next(error);
+      }
+    
+      res.status(201).json({ address: createdAddress });    
+}
+
 // Export the user-controllers
 exports.getUsers = getUsers;
 exports.signUp = signUp;
 exports.login = login;
+exports.addAddress = addAddress;
