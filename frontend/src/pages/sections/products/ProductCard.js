@@ -28,6 +28,7 @@ ShopProductCard.propTypes = {
 export default function ShopProductCard({ product }) {
   const { name, cover, price, colors, status, priceSale } = product;
 
+  console.log(cover);
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
@@ -46,7 +47,7 @@ export default function ShopProductCard({ product }) {
             {status}
           </Label>
         )}
-        <ProductImgStyle alt={name} src={cover} />
+        <ProductImgStyle alt={name} src={"products/"+cover} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>

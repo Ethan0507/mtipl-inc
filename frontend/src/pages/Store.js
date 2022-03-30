@@ -23,30 +23,46 @@ import { useContext } from 'react';
 // ----------------------------------------------------------------------
 
 const PRODUCT_NAME = [
-  'Nike Air Force 1 NDESTRUKT',
-  'Nike Space Hippie 04',
-  'Nike Air Zoom Pegasus 37 A.I.R. Chaz Bear',
-  'Nike Blazer Low 77 Vintage',
-  'Nike ZoomX SuperRep Surge',
-  'Zoom Freak 2',
-  'Nike Air Max Zephyr',
-  'Jordan Delta',
-  'Air Jordan XXXV PF',
-  'Nike Waffle Racer Crater',
-  'Kyrie 7 EP Sisterhood',
-  'Nike Air Zoom BB NXT',
-  'Nike Air Force 1 07 LX',
-  'Nike Air Force 1 Shadow SE',
-  'Nike Air Zoom Tempo NEXT%',
-  'Nike DBreak-Type',
-  'Nike Air Max Up',
-  'Nike Air Max 270 React ENG',
-  'NikeCourt Royale',
-  'Nike Air Zoom Pegasus 37 Premium',
-  'Nike Air Zoom SuperRep',
-  'NikeCourt Royale',
-  'Nike React Art3mis',
-  'Nike React Infinity Run Flyknit A.I.R. Chaz Bear'
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Slim Laptop',
+    price: '₹29,000'
+  },
+  {
+    name: 'Alienware',
+    price: '₹89,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  },
+  {
+    name: 'HP Pavillion Gaming Laptop',
+    price: '₹39,000'
+  }
 ];
 const PRODUCT_COLOR = [
   '#00AB55',
@@ -61,15 +77,15 @@ const PRODUCT_COLOR = [
 
 // ----------------------------------------------------------------------
 
-const PRODUCTS = [...Array(24)].map((_, index) => {
+const PRODUCTS = [...Array(10)].map((_, index) => {
   const setIndex = index + 1;
 
   return {
     id: faker.datatype.uuid(),
-    cover: "product_1.jpg",
-    name: PRODUCT_NAME[index],
-    price: faker.datatype.number({ min: 4, max: 99, precision: 0.01 }),
-    priceSale: setIndex % 3 ? null : faker.datatype.number({ min: 19, max: 29, precision: 0.01 }),
+    cover: "product_"+setIndex+".jpg",
+    name: PRODUCT_NAME[index].name,
+    price: PRODUCT_NAME[index].price,
+    // priceSale: setIndex % 3 ? null : faker.datatype.number({ min: 19, max: 29, precision: 0.01 }),
     colors:
       (setIndex === 1 && PRODUCT_COLOR.slice(0, 2)) ||
       (setIndex === 2 && PRODUCT_COLOR.slice(1, 3)) ||
