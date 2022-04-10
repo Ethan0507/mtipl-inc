@@ -16,7 +16,8 @@ import Container from '@mui/material/Container';
 import {
   Landing,
   About,
-  HowWeWork
+  HowWeWork,
+  Contact
  } from "./sections/home";
 
 export default function HomePage() {
@@ -25,6 +26,7 @@ export default function HomePage() {
     <Landing />
     <About />
     <HowWeWork />
+    <Contact />
     </>
   );
 }

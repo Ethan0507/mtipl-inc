@@ -5,7 +5,7 @@ import HandshakeIcon from '@mui/icons-material/Handshake';
 import WarningIcon from '@mui/icons-material/Warning';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
-export default function About() {
+export default function HowWeWork() {
     return (
         <Container id="how-we-work" sx={{ my: 5 }}>
             <Typography variant="h4" color="primary">
