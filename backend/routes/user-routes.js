@@ -36,7 +36,7 @@ router.post('/login', userController.login);
 
 
 // User Address routes
-router.post('/:userId/address/new', userController.addAddress);
+router.post('/:userId/order/new', userController.placeOrder);
 
 
 // Export the user-router

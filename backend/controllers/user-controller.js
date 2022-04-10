@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 // Internal module imports
 const User = require('../models/user');
-const Address = require('../models/address');
+const Order = require('../models/order');
 
 // Get all users
 const getUsers = async(req, res, next) => {
@@ -26,28 +26,6 @@ const getUsers = async(req, res, next) => {
 const signUp = async(req, res, next) => {
     // Validate the incoming request
     const errors = validationResult(req);
-
-    // Get the uplaoded file
-    // const file = req.files.image;
-    // // Set the destination folder to serve the uploaded file
-    // const dest = "uploads/images/" + file.name;
-
-    // // Validate if the file passed is of type - image
-    // const extensionName = path.extname(file.name); // fetch the file extension
-    // const allowedExtension = ['.png','.jpg','.jpeg'];
-    // if(!allowedExtension.includes(extensionName)){
-    //     return res.status(422).send("Invalid Image");
-    // }
-
-    // // Save file in the destination folder
-    // file.mv(dest, (err) => {
-    //     if (err) {
-    //         return res.status(500).send(err);
-    //     }
-    // });
-
-    // // In the case of cleanup
-    // req.files.image.path = dest;
 
     if (!errors.isEmpty()) {
         // Forward error to Error handler
@@ -188,7 +166,7 @@ const login = async(req, res, next) => {
 }
 
 
-const addAddress = async(req, res, next) => {
+const placeOrder = async(req, res, next) => {
 
     const { userId } = req.params;
 
@@ -211,10 +189,10 @@ const addAddress = async(req, res, next) => {
     }
 
     // Get name, email and password from request body
-    const { label, firstName, lastName, addressInfo, city, state, postalCode, country, isPrimary } = req.body;
+    const { totalAmount, firstName, lastName, addressInfo, city, state, postalCode, country, totalDiscount, cardName, cardNumber, cvv, expDate, productId, productName, productPrice } = req.body;
 
-    const createdAddress = new Address({
-        label,
+
+    const createdOrder = new Order({
         firstName,
         lastName,
         addressInfo,
@@ -222,29 +200,32 @@ const addAddress = async(req, res, next) => {
         state,
         postalCode,
         country,
-        isPrimary: isPrimary === "true" ? true : false,
+        totalAmount,
+        totalDiscount,
+        cardName, 
+        cardNumber,
+        expDate,
+        cvv,
+        productId,
+        productName,
+        productPrice,
         user: user._id
     });
 
     try {
-        const sess = await mongoose.startSession();
-        sess.startTransaction();
-        await createdAddress.save({ session: sess });
-        user.addresses.push(createdAddress);
-        await user.save({ session : sess });
-        await sess.commitTransaction();
+        await createdOrder.save();
       } catch (err) {
         // Forward the error to the Error handler
-        const error = new Error("Adding new address failed, please try again later!");
+        const error = new Error("Placing order failed, please try again later!");
         error.code = 403;
         return next(error);
       }
     
-      res.status(201).json({ address: createdAddress });    
+      res.status(201).json({ order: createdOrder });    
 }
 
 // Export the user-controllers
 exports.getUsers = getUsers;
 exports.signUp = signUp;
 exports.login = login;
-exports.addAddress = addAddress;
+exports.placeOrder = placeOrder;

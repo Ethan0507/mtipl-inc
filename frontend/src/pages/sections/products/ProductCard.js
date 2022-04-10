@@ -28,7 +28,6 @@ ShopProductCard.propTypes = {
 export default function ShopProductCard({ product }) {
   const { name, cover, price, colors, status, priceSale } = product;
 
-  console.log(cover);
   return (
     <Card>
       <Box sx={{ pt: '100%', position: 'relative' }}>
@@ -51,7 +50,7 @@ export default function ShopProductCard({ product }) {
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
-        <Link to="/product" color="inherit" underline="hover" component={RouterLink}>
+        <Link to={"/product?id="+product.id} color="inherit" underline="hover" component={RouterLink}>
           <Typography variant="subtitle2" noWrap>
             {name}
           </Typography>

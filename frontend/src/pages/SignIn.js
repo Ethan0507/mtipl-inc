@@ -17,6 +17,7 @@ import { AuthContext } from "../utils/context/auth-context";
 import { useContext } from 'react';
 
 import { useNavigate } from "react-router-dom";
+import { useEffect } from 'react';
 
 export default function SignIn() {
   
@@ -24,6 +25,14 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const [error, setError] = React.useState();
+
+
+  useEffect(() => {
+    if(auth.isLoggedIn){
+      navigate("/store");
+    }
+  });
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();

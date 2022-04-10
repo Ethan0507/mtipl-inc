@@ -19,7 +19,7 @@ import {
   HowWeWork
  } from "./sections/home";
 
-export default function Pricing() {
+export default function HomePage() {
   return (
     <>
     <Landing />

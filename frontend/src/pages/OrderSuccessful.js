@@ -1,16 +1,19 @@
 import { Button, Container, Typography, Box } from '@mui/material';
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function OrderSuccessful () {
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const { orderNo, orderTotal } = location.state;
 
     return (
         <>
         <Container style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} sx={{ mx: "auto", my: 5 }} >
-            <Typography variant="body">Order #21</Typography>
-            <Typography variant="h4">Successfully paid: ₹23.99</Typography>
+            <Typography variant="body">{"Order #" +orderNo}</Typography>
+            <Typography variant="h4">{"Successfully paid: ₹"+orderTotal}</Typography>
             <Box sx={{ m: 2 }}>
                 <svg style={{ height: "300px", width: "300px"}} xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 475 512.24">
                     <path fill="#C28F60" d="m0 417.58 202.44 26.17c-5.92-16.29-9.15-33.86-9.15-52.19 0-42.22 17.12-80.46 44.79-108.13 27.66-27.66 65.9-44.78 108.12-44.78s80.46 17.12 108.13 44.78a154.91 154.91 0 0 1 16.02 18.85l1.39-261.39L171.87 0 0 77.98v339.6z"/>

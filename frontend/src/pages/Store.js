@@ -81,7 +81,7 @@ const PRODUCTS = [...Array(10)].map((_, index) => {
   const setIndex = index + 1;
 
   return {
-    id: faker.datatype.uuid(),
+    id: setIndex,
     cover: "product_"+setIndex+".jpg",
     name: PRODUCT_NAME[index].name,
     price: PRODUCT_NAME[index].price,

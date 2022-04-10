@@ -14,21 +14,69 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import { useFormik, Form, FormikProvider } from 'formik';
+import {useLocation, useNavigate} from 'react-router-dom';
+import { AuthContext } from "../utils/context/auth-context";
+import { useContext } from 'react';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
-export default function Checkout() {
+export default function Checkout(props) {
+
+  const auth = useContext(AuthContext);
+
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const product = location.state.product;
+  const products = [];
+  products.push(product);
+  
 
   const formik = useFormik({
     initialValues: getInitialValues(activeStep),
   });
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (activeStep === 2) {
-      window.location.href = "/order/success";
+      
+      let reqBody = formik.values;
+
+      reqBody.totalAmount = product.price;
+      reqBody.totalDiscount = 0;
+      reqBody.productId = product.id;
+      reqBody.productName = product.name;
+      reqBody.productPrice = product.price;
+
+      console.log(reqBody);
+
+      try {
+  
+        let response = await fetch('http://localhost:5000/api/users/'+auth.userId+'/order/new', {
+          method: 'POST',
+          body: JSON.stringify(reqBody),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        let responseData = await response.json();
+        if (!response.ok) {
+          throw Error(responseData.message);
+        }
+        navigate("/order/success", {
+          state: {
+            orderNo: responseData.order._id,
+            orderTotal: product.price
+          }
+        
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
     else {
+      console.log(formik.values);
       setActiveStep(activeStep + 1);
     }
   };
@@ -40,11 +88,11 @@ export default function Checkout() {
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <AddressForm handleNext={handleNext} formik={formik}/>;
+        return <AddressForm formik={formik}/>;
       case 1:
-        return <PaymentForm />;
+        return <PaymentForm formik={formik}/>;
       case 2:
-        return <Review />;
+        return <Review products={products} formValues={formik.values}/>;
       default:
         throw new Error('Unknown step');
     }
@@ -54,7 +102,6 @@ export default function Checkout() {
     switch(step) {
       case 0: 
         return {
-          label: '',
           firstName: '',
           lastName: '',
           addressInfo: '',
@@ -62,7 +109,10 @@ export default function Checkout() {
           state: '',
           postalCode: '',
           country: '',
-          isPrimary: false
+          cardName: '',
+          cardNumber: '',
+          expDate: '',
+          cvv: ''
         };
       case 1:
           return {
@@ -121,7 +171,6 @@ export default function Checkout() {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
-                    type="submit"
                   >
                     {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
                   </Button>
