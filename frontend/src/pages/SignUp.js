@@ -36,7 +36,7 @@ export default function SignUp() {
         throw Error("Please enter a valid email address");
       }
 
-      let response = await fetch('http://localhost:5000/api/users/new', {
+      let response = await fetch('/api/users/new', {
         method: 'POST',
         body: JSON.stringify({
           name: data.get('firstName') + data.get('lastName'),

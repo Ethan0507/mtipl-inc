@@ -53,7 +53,7 @@ export default function Checkout(props) {
 
       try {
   
-        let response = await fetch('http://localhost:5000/api/users/'+auth.userId+'/order/new', {
+        let response = await fetch('/api/users/'+auth.userId+'/order/new', {
           method: 'POST',
           body: JSON.stringify(reqBody),
           headers: {
